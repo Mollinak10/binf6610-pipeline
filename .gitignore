@@ -1,0 +1,13 @@
+results/
+smoke/
+smoke-out/
+*.bam
+*.bai
+*.cram
+*.fastq.gz
+*.fq.gz
+*.fa
+*.fa.*
+*.dict
+*.vcf.gz
+*.vcf.gz.tbi
