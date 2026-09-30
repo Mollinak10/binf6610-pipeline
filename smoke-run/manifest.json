@@ -1,0 +1,40 @@
+{
+  "pipeline": {
+    "name": "variant-call",
+    "version": "1.0.0",
+    "implementation": "bash",
+    "git_sha": "091b543fd14495e677cbd219e2c80ebb3e84f1e7",
+    "run_id": "2026-09-30T23:45:54Z-091b543",
+    "started_at": "2026-09-30T23:45:54Z",
+    "finished_at": "2026-09-30T23:49:13Z",
+    "exit_status": "success"
+  },
+  "platform": {
+    "kind": "laptop",
+    "region": "smoke_1mb",
+    "host": "DESKTOP-MBJ0599",
+    "slurm_job_id": "none",
+    "slurm_cpus": "none",
+    "container": "none"
+  },
+  "reference": {"genome": "/home/molly_k/smoke/smoke.fa"},
+  "samples": [
+    {"sample_id": "smoke_01", "library_type": "paired", "condition": "unaffected"},
+    {"sample_id": "smoke_02", "library_type": "paired", "condition": "affected"},
+    {"sample_id": "smoke_03", "library_type": "single", "condition": "affected"}
+  ],
+  "outputs": [
+    {"stage": "analyze", "type": "vcf", "path": "cohort.filtered.vcf.gz", "checksum": "sha256:419c63d91c4a2fce25a803af08d7bd5464e8b4a1eb15430c379680b8e46c319c"},
+    {"stage": "analyze", "type": "vcf_index", "path": "cohort.filtered.vcf.gz.tbi", "checksum": "sha256:f48d95e48358d1a27bddaa823d094a488ca639927b76ae4603f14b0ff97bd39e"},
+    {"stage": "qc_report", "type": "multiqc", "path": "multiqc_report.html", "checksum": "sha256:20b425238a9aa7dbbfb2ea661261fc812a62f24c9fc76a5fee40720c777abfa5"}
+  ],
+  "metrics": [],
+  "tools": {
+    "bwa": "0.7.19-r1273",
+    "samtools": "1.24",
+    "gatk": "4.6.2.0",
+    "fastqc": "0.12.1",
+    "fastp": "1.3.7",
+    "multiqc": "1.35"
+  }
+}
