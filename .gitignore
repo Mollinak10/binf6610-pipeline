@@ -1,6 +1,8 @@
 results/
 smoke/
 smoke-out/
+slurm/logs/
+logs/
 *.bam
 *.bai
 *.cram
