@@ -2,6 +2,17 @@
 
 ## Week 3 — four deliberate failures with the container
 
+### Breakage 1: an unpinned recipe, built twice (laptop)
+
+Command: in ~/breakage1, a Dockerfile of `FROM ubuntu` and `RUN apt-get update && apt-get install -y curl`. Built with `docker build -t unpinned:day1 .` on Fri Oct 2 15:13, then rebuilt with `docker build --pull --no-cache -t unpinned:day2 .` on Fri Oct 2 17:02. Each package list taken with `docker run --rm <image> dpkg -l`. Files: troubleshooting/breakage1/ (both dpkg lists, dates, image ids, and dpkg-diff.txt with every line that differs).
+
+The brief asks for a day between the builds; I had 1 h 49 min because of the deadline. I expected no difference over so short a gap. Instead `ubuntu:latest` had moved to a new release in between:
+
+    build 1: FROM ubuntu:latest@sha256:66460d557b25...   image sha256:b1cd44f3...   113 packages, Ubuntu 24.04
+    build 2: FROM ubuntu:latest@sha256:3595d7fc4286...   image sha256:6f6336d8...   117 packages, Ubuntu 26.04
+
+Every package line differs (diff `1,113c1,117`). For example: curl 8.5.0-2ubuntu10.15 -> 8.18.0-1ubuntu2.7, libc6 2.39-0ubuntu8.6 -> 2.43-2ubuntu2.4, bash 5.2.21-2ubuntu4 -> 5.3-2ubuntu1, openssl 3.0.13-0ubuntu3.16 -> 3.5.5-1ubuntu3.7, ca-certificates 20260601~24.04.1 -> 20260601~26.04.1, and GNU coreutils 9.4 was replaced by rust-coreutils 0.10.0. The same two-line recipe gave a different operating system. Without --pull and --no-cache the second build would have been a cache hit and looked identical. Fix: a tagged base (here mambaorg/micromamba:2.0.5-ubuntu24.04, recorded by digest in IMAGE.md), =version on every package, and pull the finished image by its digest rather than rebuilding.
+
 ### Breakage 2: no --bind (job 10767626)
 
 Command: deleted the `--bind /courses/BINF6610.202710,/scratch/${USER}` line from 01_persample.sbatch, then `sbatch --array=1 01_persample.sbatch` (restored with git checkout). The script Slurm ran (`scontrol write batch_script`) had the --env lines and "${SIF}" but no --bind.
