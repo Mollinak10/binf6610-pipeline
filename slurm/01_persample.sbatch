@@ -27,14 +27,19 @@ trap 'rm -rf "${TMPDIR}"' EXIT
 export THREADS="${SLURM_CPUS_PER_TASK}"
 export JAVA_MEM
 
-# The course environment (activation scripts are not nounset-safe)
-set +u
-module load miniconda3/25.9.1
-source activate "${CONDA_ENV}"
-set -u
+# The software comes from the image. --cleanenv starts it with none of this
+# shell's variables; --env carries back the ones the pipeline reads; --bind
+# makes the course data and the run directory visible inside.
+apptainer exec --cleanenv \
+    --env THREADS="${THREADS}" \
+    --env JAVA_MEM="${JAVA_MEM}" \
+    --env TMPDIR="${TMPDIR}" \
+    --env SLURM_JOB_ID="${SLURM_JOB_ID}" \
+    --env SLURM_CPUS_PER_TASK="${SLURM_CPUS_PER_TASK}" \
+    --bind /courses/BINF6610.202710,/scratch/${USER} \
+    "${SIF}" \
+    bash "${PIPELINE_DIR}/run_sample.sh" "${SAMPLESHEET}" "${RUN_ROOT}" "${SAMPLE}"
 
-bash "${PIPELINE_DIR}/run_sample.sh" "${SAMPLESHEET}" "${RUN_ROOT}" "${SAMPLE}"
-
-# Exact peak memory of this job, for RESOURCES.md
+# Exact peak memory of this job
 CG=/sys/fs/cgroup$(awk -F: '/^0::/{print $3}' /proc/self/cgroup)
 echo "memory.peak: $(cat "$CG/memory.peak" 2>/dev/null || echo unavailable) bytes" >&2

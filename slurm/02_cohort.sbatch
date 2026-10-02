@@ -20,12 +20,18 @@ trap 'rm -rf "${TMPDIR}"' EXIT
 export THREADS="${SLURM_CPUS_PER_TASK}"
 export JAVA_MEM
 
-set +u
-module load miniconda3/25.9.1
-source activate "${CONDA_ENV}"
-set -u
-
-FROM_STAGE=merge bash "${PIPELINE_DIR}/run_pipeline.sh" "${SAMPLESHEET}" "${RUN_ROOT}"
+# Stages 6-9 inside the image. FROM_STAGE has to be carried in with --env:
+# under --cleanenv a VAR=value prefix in front of apptainer would not cross.
+apptainer exec --cleanenv \
+    --env THREADS="${THREADS}" \
+    --env JAVA_MEM="${JAVA_MEM}" \
+    --env TMPDIR="${TMPDIR}" \
+    --env SLURM_JOB_ID="${SLURM_JOB_ID}" \
+    --env SLURM_CPUS_PER_TASK="${SLURM_CPUS_PER_TASK}" \
+    --env FROM_STAGE=merge \
+    --bind /courses/BINF6610.202710,/scratch/${USER} \
+    "${SIF}" \
+    bash "${PIPELINE_DIR}/run_pipeline.sh" "${SAMPLESHEET}" "${RUN_ROOT}"
 
 CG=/sys/fs/cgroup$(awk -F: '/^0::/{print $3}' /proc/self/cgroup)
 echo "memory.peak: $(cat "$CG/memory.peak" 2>/dev/null || echo unavailable) bytes" >&2
