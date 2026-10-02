@@ -1,5 +1,30 @@
 # Troubleshooting log
 
+## Week 3 — four deliberate failures with the container
+
+### Breakage 2: no --bind (job 10767626)
+
+Command: deleted the `--bind /courses/BINF6610.202710,/scratch/${USER}` line from 01_persample.sbatch, then `sbatch --array=1 01_persample.sbatch` (restored with git checkout). The script Slurm ran (`scontrol write batch_script`) had the --env lines and "${SIF}" but no --bind.
+
+    10767626_1   FAILED   1:0   00:00:04
+
+Output: `ERROR: samplesheet not found: /courses/BINF6610.202710/data/samplesheet-variant8.csv`. It stopped in stage 0, exit code 1, after 4 seconds. The path the container could not see was /courses/BINF6610.202710: without --bind, Apptainer shows only home, /tmp and the current directory. One line earlier the job script, outside the container, had read the same samplesheet with awk to pick NA12878; inside, it did not exist. Fix: keep --bind /courses/BINF6610.202710,/scratch/${USER}.
+
+### Breakage 3: no --env THREADS (job 10767653)
+
+Command: deleted `--env THREADS="${THREADS}"` from 01_persample.sbatch, then `sbatch --array=1 --cpus-per-task=8 01_persample.sbatch` (8 cores, so the default of 4 would show).
+
+    10767653_1   COMPLETED   00:09:58   AllocCPUS 8   TotalCPU 22:21.994
+
+Output: the log said `environment OK: ... THREADS=4`. bwa's log ended `[main] CMD: bwa mem -t 4 ...`, and HaplotypeCaller ran with `--native-pair-hmm-threads 4` (log line 96, with -Djava.io.tmpdir=/tmp/10767653, this job's id). The job held 8 cores and used about 2.2 (22:22 CPU over 9:58), and nothing failed: under --cleanenv THREADS never reached the container, so lib/common.sh fell back to THREADS=${THREADS:-4}. Fix: keep --env THREADS="${THREADS}".
+
+### Breakage 4: an arm64 image on Explorer (srun job 10766653)
+
+Command: `apptainer pull --arch arm64 arm.sif docker://ubuntu:24.04`, then `apptainer exec arm.sif uname -m`, on a compute node.
+
+Output: the pull succeeded (exit code 0, a 28 MB arm.sif, no warning about architecture). The run failed: `FATAL: While checking container encryption: could not open image /scratch/kaul.mo/breakage4/arm.sif: the image's architecture (arm64) could not run on the host's (amd64)`, exit code 255. A wrong-architecture image downloads and converts without complaint and fails only when used. Fix: build with --platform linux/amd64 and check with `docker image inspect --format '{{.Architecture}}'` before pushing.
+
+
 ## Week 2 — four deliberate failures on Explorer
 
 ### 1. A --time that is too short (job 10763699)
