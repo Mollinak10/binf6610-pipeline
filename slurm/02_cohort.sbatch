@@ -4,9 +4,9 @@
 #SBATCH --job-name=vc-cohort
 #SBATCH --partition=courses
 #SBATCH --account=binf6610.202710
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
-#SBATCH --time=01:00:00
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=8G
+#SBATCH --time=00:30:00
 #SBATCH --export=NONE                          # start clean: take nothing from your login shell
 #SBATCH --output=logs/cohort_%j.out            # submit.sh runs mkdir -p logs first
 set -euo pipefail
