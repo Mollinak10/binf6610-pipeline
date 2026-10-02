@@ -1,0 +1,3 @@
+1ed3b2c9adada7704fc028bf685cc1d4ffb6d499662835fac0f055866b1dddc4  -
+88edac506861d753101a80a0a30beab80f5e8d54f1d0de5e08bc156a404d3411  -
+They differ because last week's run (cluster-run/) used --cpus-per-task=8 and this run used 4: bwa mem reads its input in batches of threads x 10 million bases, so a different thread count gives different batches and a few read pairs align differently. The software is identical (versions-conda.txt and versions-image.txt do not differ) and both runs have 36853 variant records.
