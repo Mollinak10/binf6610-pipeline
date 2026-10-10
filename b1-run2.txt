@@ -1,0 +1,36 @@
+N E X T F L O W  ~  version 26.04.7
+Launching `main.nf` [soggy_picasso] - revision: e281d2ee1a
+[68/77d042] Cached process > VALIDATE
+[3f/4bdd9e] Cached process > FASTQC (smoke_03)
+[1c/06ab96] Cached process > FASTP (smoke_03)
+[05/ba813c] Cached process > FASTP (smoke_01)
+[a5/4fe90e] Cached process > FASTP (smoke_02)
+[5e/e83b88] Cached process > FASTQC (smoke_01)
+[d2/7a822e] Cached process > FASTQC (smoke_02)
+[48/9903cb] Cached process > BWA_MEM (smoke_03)
+[a8/c25892] Cached process > BWA_MEM (smoke_02)
+[d3/16d2c7] Cached process > BWA_MEM (smoke_01)
+[2f/56222e] Submitted process > MARKDUPLICATES (smoke_01)
+[c1/9baccb] Submitted process > MARKDUPLICATES (smoke_02)
+[13/99b9c5] Submitted process > MARKDUPLICATES (smoke_03)
+[94/a9690c] Submitted process > HAPLOTYPECALLER (smoke_01)
+[87/4f9896] Submitted process > HAPLOTYPECALLER (smoke_02)
+[f5/ac70c1] Submitted process > MULTIQC
+[f7/2b4fdc] Submitted process > HAPLOTYPECALLER (smoke_03)
+[a6/11e1ed] Submitted process > JOINT_GENOTYPE
+[da/27dd4c] Submitted process > FILTER
+[cb/b50caa] Submitted process > PUBLISH
+
+Outputs:
+
+  /home/molly_k/binf6610-pipeline/results-b1
+
+  vcf: cohort.filtered.vcf.gz
+
+  variants: variants.tsv
+
+  multiqc: multiqc_report.html
+
+  manifest: manifest.json
+
+  samples: samples.tsv

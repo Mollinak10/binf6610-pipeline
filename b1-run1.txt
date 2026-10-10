@@ -1,0 +1,13 @@
+N E X T F L O W  ~  version 26.04.7
+Launching `main.nf` [tiny_faraday] - revision: e281d2ee1a
+[68/77d042] Submitted process > VALIDATE
+[d2/7a822e] Submitted process > FASTQC (smoke_02)
+[05/ba813c] Submitted process > FASTP (smoke_01)
+[3f/4bdd9e] Submitted process > FASTQC (smoke_03)
+[5e/e83b88] Submitted process > FASTQC (smoke_01)
+[1c/06ab96] Submitted process > FASTP (smoke_03)
+[a5/4fe90e] Submitted process > FASTP (smoke_02)
+[d3/16d2c7] Submitted process > BWA_MEM (smoke_01)
+[48/9903cb] Submitted process > BWA_MEM (smoke_03)
+[a8/c25892] Submitted process > BWA_MEM (smoke_02)
+[27/b24fdf] Submitted process > MARKDUPLICATES (smoke_01)
