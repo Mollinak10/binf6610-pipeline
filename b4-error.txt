@@ -1,0 +1,16 @@
+47:ERROR ~ Error executing process > 'HAPLOTYPECALLER (NA10851)'
+48-
+49-Caused by:
+50-  Process `HAPLOTYPECALLER (NA10851)` terminated with an error exit status (140)
+51-
+52-
+53-Command executed:
+54-
+55-  gatk --java-options "-Xmx13107m" HaplotypeCaller \
+56-      -R GRCh38_full_analysis_set_plus_decoy_hla.fa -I NA10851.markdup.bam -O NA10851.g.vcf.gz -L chr20:1-10000000 -ERC GVCF \
+57-      --native-pair-hmm-threads 8 --tmp-dir .
+58-
+59-Command exit status:
+60-  140
+61-
+62-Command output:
