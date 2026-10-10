@@ -13,3 +13,7 @@ logs/
 *.dict
 *.vcf.gz
 *.vcf.gz.tbi
+work/
+.nextflow/
+.nextflow.log*
+nf-head-*.out
