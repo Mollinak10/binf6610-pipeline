@@ -1,0 +1,36 @@
+N E X T F L O W  ~  version 26.04.7
+Launching `main.nf` [romantic_lamarr] - revision: e281d2ee1a
+[10/260e32] Submitted process > VALIDATE
+ERROR ~ Error executing process > 'VALIDATE'
+
+Caused by:
+  Process `VALIDATE` terminated with an error exit status (1)
+
+
+Command executed:
+
+  echo "fastqs here: samplesheet.csvls *.fastq.gz | wc -l)" >&2
+  echo "fastqs here: smoke.fals *.fastq.gz | wc -l)" >&2
+  validate_samplesheet.sh smoke.dict
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  fastqs here: samplesheet.csvls *.fastq.gz | wc -l)
+  fastqs here: smoke.fals *.fastq.gz | wc -l)
+  /home/molly_k/binf6610-pipeline/bin/validate_samplesheet.sh: line 5: 2: usage
+
+Work dir:
+  /home/molly_k/binf6610-pipeline/work/10/260e320cec18907ee383a5b4042623
+
+Container:
+  community.wave.seqera.io/library/coreutils_gawk_gzip:7c58ccc2f9ca6bcc
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+
+ -- Check '.nextflow.log' file for details
+WARN: Failed to render execution report -- see the log file for details

@@ -1,0 +1,30 @@
+N E X T F L O W  ~  version 26.04.7
+Launching `main.nf` [cheeky_visvesvaraya] - revision: 883c5232cc
+[ef/155f67] Submitted process > VALIDATE
+[07/45c773] Submitted process > FASTQC (smoke_02)
+[29/4848be] Submitted process > FASTQC (smoke_03)
+[0d/be0b02] Submitted process > FASTQC (smoke_01)
+[d0/935a1e] Submitted process > FASTP (smoke_03)
+[60/aa529d] Submitted process > FASTP (smoke_01)
+[41/c0fb4a] Submitted process > FASTP (smoke_02)
+[19/d69b73] Submitted process > BWA_MEM (smoke_03)
+[8d/e46333] Submitted process > MARKDUPLICATES (smoke_03)
+[59/1d7e15] Submitted process > MULTIQC
+[59/8cf105] Submitted process > HAPLOTYPECALLER (smoke_03)
+[c3/79a457] Submitted process > JOINT_GENOTYPE
+[8b/0d7724] Submitted process > FILTER
+[6e/bfdd67] Submitted process > PUBLISH
+
+Outputs:
+
+  /home/molly_k/binf6610-pipeline/results-b2
+
+  vcf: cohort.filtered.vcf.gz
+
+  variants: variants.tsv
+
+  multiqc: multiqc_report.html
+
+  manifest: manifest.json
+
+  samples: samples.tsv
