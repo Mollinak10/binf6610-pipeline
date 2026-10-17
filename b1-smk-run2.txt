@@ -1,0 +1,132 @@
+Using profile profiles/laptop for setting default command line arguments.
+Config file config.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+
+SNAKEMAKE
+=========
+  Date: 2026-10-16 23:12:22
+  Workflow ID: cb17af30-b7c6-4d06-a8e5-0cc1bab5e121
+  Platform: Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.31
+  Host: DESKTOP-MBJ0599
+  User: molly_k
+  Snakemake version: 9.27.0
+  Python version: 3.14.8 | packaged by conda-forge | (main, Oct 12 2026, 17:35:27) [GCC 15.3.0]
+  Command: /home/molly_k/miniforge3/envs/smk/bin/snakemake --profile profiles/laptop --config samplesheet=/home/molly_k/smoke/samplesheet.csv ref=/home/molly_k/smoke/smoke.fa region=smoke_1mb
+  Snakefile: /home/molly_k/binf6610-pipeline/Snakefile
+  Base directory: /home/molly_k/binf6610-pipeline
+  Run directory: /home/molly_k/binf6610-pipeline
+  Working directory: /home/molly_k/binf6610-pipeline
+  Config file(s): [PosixPath('/home/molly_k/binf6610-pipeline/profiles/laptop/platform.yaml'), 'config.yaml']
+  Config MD5: 13fc6c5781af14bf5329a8bd449f94e9
+
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Provided resources: mem_mb=Resource("mem_mb", 2500)
+Singularity containers: ignored
+Job stats:
+job                count
+---------------  -------
+validate               1
+fastp_paired           2
+fastp_single           1
+fastqc                 3
+bwa_mem                3
+markduplicates         3
+haplotypecaller        3
+multiqc                1
+joint_genotype         1
+filter                 1
+publish                1
+all                    1
+total                 21
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:12:22 2026]
+localrule validate:
+    input: /home/molly_k/smoke/samplesheet.csv, /home/molly_k/smoke/smoke_01_R1.fastq.gz, /home/molly_k/smoke/smoke_01_R2.fastq.gz, /home/molly_k/smoke/smoke_02_R1.fastq.gz, /home/molly_k/smoke/smoke_02_R2.fastq.gz, /home/molly_k/smoke/smoke_03_R1.fastq.gz, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.fa.amb, /home/molly_k/smoke/smoke.fa.ann, /home/molly_k/smoke/smoke.fa.bwt, /home/molly_k/smoke/smoke.fa.pac, /home/molly_k/smoke/smoke.fa.sa, /home/molly_k/smoke/smoke.dict
+    output: work/validate/samplesheet.csv
+    log: logs/validate.log
+    jobid: 7
+    reason: Missing output files: work/validate/samplesheet.csv
+    resources: tmpdir=/tmp
+Shell command: (/home/molly_k/binf6610-pipeline/bin/validate_samplesheet.sh /home/molly_k/smoke/samplesheet.csv /home/molly_k/smoke/smoke.fa && cp /home/molly_k/smoke/samplesheet.csv work/validate/samplesheet.csv) 2> logs/validate.log
+[Fri Oct 16 23:12:24 2026]
+Finished jobid: 7 (Rule: validate)
+1 of 21 steps (5%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:12:24 2026]
+localrule fastqc:
+    input: /home/molly_k/smoke/smoke_02_R1.fastq.gz, /home/molly_k/smoke/smoke_02_R2.fastq.gz, work/validate/samplesheet.csv
+    output: work/fastqc/smoke_02
+    log: logs/fastqc/smoke_02.log
+    jobid: 18
+    reason: Missing output files: work/fastqc/smoke_02; Input files updated by another job: work/validate/samplesheet.csv
+    wildcards: sample=smoke_02
+    threads: 2
+    resources: tmpdir=/tmp
+Shell command: (mkdir -p work/fastqc/smoke_02 && fastqc -q -t 2 -o work/fastqc/smoke_02 /home/molly_k/smoke/smoke_02_R1.fastq.gz /home/molly_k/smoke/smoke_02_R2.fastq.gz) 2> logs/fastqc/smoke_02.log
+application/gzip
+application/gzip
+Select jobs to execute...
+[Fri Oct 16 23:12:28 2026]
+Finished jobid: 18 (Rule: fastqc)
+2 of 21 steps (10%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:12:28 2026]
+localrule fastqc:
+    input: /home/molly_k/smoke/smoke_01_R1.fastq.gz, /home/molly_k/smoke/smoke_01_R2.fastq.gz, work/validate/samplesheet.csv
+    output: work/fastqc/smoke_01
+    log: logs/fastqc/smoke_01.log
+    jobid: 17
+    reason: Missing output files: work/fastqc/smoke_01; Input files updated by another job: work/validate/samplesheet.csv
+    wildcards: sample=smoke_01
+    threads: 2
+    resources: tmpdir=/tmp
+Shell command: (mkdir -p work/fastqc/smoke_01 && fastqc -q -t 2 -o work/fastqc/smoke_01 /home/molly_k/smoke/smoke_01_R1.fastq.gz /home/molly_k/smoke/smoke_01_R2.fastq.gz) 2> logs/fastqc/smoke_01.log
+application/gzip
+application/gzip
+Select jobs to execute...
+[Fri Oct 16 23:12:31 2026]
+Finished jobid: 17 (Rule: fastqc)
+3 of 21 steps (14%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:12:31 2026]
+localrule fastp_paired:
+    input: /home/molly_k/smoke/smoke_02_R1.fastq.gz, /home/molly_k/smoke/smoke_02_R2.fastq.gz, work/validate/samplesheet.csv
+    output: work/trim/smoke_02_R1.trim.fastq.gz, work/trim/smoke_02_R2.trim.fastq.gz, work/trim/smoke_02.fastp.json, work/trim/smoke_02.fastp.html
+    log: logs/fastp/smoke_02.log
+    jobid: 11
+    reason: Missing output files: work/trim/smoke_02_R2.trim.fastq.gz, work/trim/smoke_02_R1.trim.fastq.gz, work/trim/smoke_02.fastp.json; Input files updated by another job: work/validate/samplesheet.csv
+    wildcards: sample=smoke_02
+    threads: 2
+    resources: tmpdir=/tmp
+Shell command: fastp -w 2 -i /home/molly_k/smoke/smoke_02_R1.fastq.gz -I /home/molly_k/smoke/smoke_02_R2.fastq.gz --detect_adapter_for_pe -o work/trim/smoke_02_R1.trim.fastq.gz -O work/trim/smoke_02_R2.trim.fastq.gz -j work/trim/smoke_02.fastp.json -h work/trim/smoke_02.fastp.html 2> logs/fastp/smoke_02.log
+Select jobs to execute...
+[Fri Oct 16 23:12:53 2026]
+Finished jobid: 11 (Rule: fastp_paired)
+4 of 21 steps (19%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:12:53 2026]
+localrule bwa_mem:
+    input: work/trim/smoke_02_R1.trim.fastq.gz, work/trim/smoke_02_R2.trim.fastq.gz, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.fa.amb, /home/molly_k/smoke/smoke.fa.ann, /home/molly_k/smoke/smoke.fa.bwt, /home/molly_k/smoke/smoke.fa.pac, /home/molly_k/smoke/smoke.fa.sa
+    output: work/align/smoke_02.sorted.bam
+    log: logs/bwa_mem/smoke_02.log
+    jobid: 10
+    reason: Missing output files: work/align/smoke_02.sorted.bam; Input files updated by another job: work/trim/smoke_02_R2.trim.fastq.gz, work/trim/smoke_02_R1.trim.fastq.gz
+    wildcards: sample=smoke_02
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: 
+        (bwa mem -t 2 -R '@RG\tID:smoke_02\tSM:smoke_02\tPL:ILLUMINA' /home/molly_k/smoke/smoke.fa work/trim/smoke_02_R1.trim.fastq.gz work/trim/smoke_02_R2.trim.fastq.gz \
+            | samtools sort -@ 2 -T work/align/smoke_02.tmp -o work/align/smoke_02.sorted.bam -) 2> logs/bwa_mem/smoke_02.log
+        
+Select jobs to execute...

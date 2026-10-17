@@ -1,0 +1,97 @@
+Using profile profiles/laptop for setting default command line arguments.
+Config file config.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+
+SNAKEMAKE
+=========
+  Date: 2026-10-16 23:13:03
+  Workflow ID: bb0dd9a6-5c44-4f19-b757-b3095c04e58e
+  Platform: Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.31
+  Host: DESKTOP-MBJ0599
+  User: molly_k
+  Snakemake version: 9.27.0
+  Python version: 3.14.8 | packaged by conda-forge | (main, Oct 12 2026, 17:35:27) [GCC 15.3.0]
+  Command: /home/molly_k/miniforge3/envs/smk/bin/snakemake --profile profiles/laptop --config samplesheet=/home/molly_k/smoke/samplesheet.csv ref=/home/molly_k/smoke/smoke.fa region=smoke_1mb
+  Snakefile: /home/molly_k/binf6610-pipeline/Snakefile
+  Base directory: /home/molly_k/binf6610-pipeline
+  Run directory: /home/molly_k/binf6610-pipeline
+  Working directory: /home/molly_k/binf6610-pipeline
+  Config file(s): [PosixPath('/home/molly_k/binf6610-pipeline/profiles/laptop/platform.yaml'), 'config.yaml']
+  Config MD5: 13fc6c5781af14bf5329a8bd449f94e9
+
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Provided resources: mem_mb=Resource("mem_mb", 2500)
+Singularity containers: ignored
+Job stats:
+job                count
+---------------  -------
+bwa_mem                3
+fastp_paired           1
+fastp_single           1
+fastqc                 1
+markduplicates         3
+haplotypecaller        3
+multiqc                1
+joint_genotype         1
+filter                 1
+publish                1
+all                    1
+total                 17
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:13:03 2026]
+localrule bwa_mem:
+    input: work/trim/smoke_02_R1.trim.fastq.gz, work/trim/smoke_02_R2.trim.fastq.gz, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.fa.amb, /home/molly_k/smoke/smoke.fa.ann, /home/molly_k/smoke/smoke.fa.bwt, /home/molly_k/smoke/smoke.fa.pac, /home/molly_k/smoke/smoke.fa.sa
+    output: work/align/smoke_02.sorted.bam
+    log: logs/bwa_mem/smoke_02.log
+    jobid: 10
+    reason: Missing output files: work/align/smoke_02.sorted.bam
+    wildcards: sample=smoke_02
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: 
+        (bwa mem -t 2 -R '@RG\tID:smoke_02\tSM:smoke_02\tPL:ILLUMINA' /home/molly_k/smoke/smoke.fa work/trim/smoke_02_R1.trim.fastq.gz work/trim/smoke_02_R2.trim.fastq.gz \
+            | samtools sort -@ 2 -T work/align/smoke_02.tmp -o work/align/smoke_02.sorted.bam -) 2> logs/bwa_mem/smoke_02.log
+        
+Select jobs to execute...
+[Fri Oct 16 23:13:15 2026]
+Finished jobid: 10 (Rule: bwa_mem)
+1 of 17 steps (6%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:13:15 2026]
+localrule markduplicates:
+    input: work/align/smoke_02.sorted.bam
+    output: work/markdup/smoke_02.markdup.bam, work/markdup/smoke_02.markdup.bam.bai, work/markdup/smoke_02.markdup.metrics.txt
+    log: logs/markduplicates/smoke_02.log
+    jobid: 9
+    reason: Missing output files: work/markdup/smoke_02.markdup.bam, work/markdup/smoke_02.markdup.bam.bai, work/markdup/smoke_02.markdup.metrics.txt; Input files updated by another job: work/align/smoke_02.sorted.bam
+    wildcards: sample=smoke_02
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: (gatk --java-options '-Xmx1600m' MarkDuplicates -I work/align/smoke_02.sorted.bam -O work/markdup/smoke_02.markdup.bam -M work/markdup/smoke_02.markdup.metrics.txt --TMP_DIR work/markdup && samtools index work/markdup/smoke_02.markdup.bam) 2> logs/markduplicates/smoke_02.log
+Select jobs to execute...
+Tool returned:
+0
+[Fri Oct 16 23:13:24 2026]
+Finished jobid: 9 (Rule: markduplicates)
+2 of 17 steps (12%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:13:24 2026]
+localrule haplotypecaller:
+    input: work/markdup/smoke_02.markdup.bam, work/markdup/smoke_02.markdup.bam.bai, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.dict
+    output: work/gvcf/smoke_02.g.vcf.gz, work/gvcf/smoke_02.g.vcf.gz.tbi
+    log: logs/haplotypecaller/smoke_02.log
+    jobid: 8
+    reason: Missing output files: work/gvcf/smoke_02.g.vcf.gz, work/gvcf/smoke_02.g.vcf.gz.tbi; Input files updated by another job: work/markdup/smoke_02.markdup.bam, work/markdup/smoke_02.markdup.bam.bai
+    wildcards: sample=smoke_02
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: gatk --java-options '-Xmx1600m' HaplotypeCaller -R /home/molly_k/smoke/smoke.fa -I work/markdup/smoke_02.markdup.bam -O work/gvcf/smoke_02.g.vcf.gz -L smoke_1mb -ERC GVCF --native-pair-hmm-threads 2 --tmp-dir work/gvcf 2> logs/haplotypecaller/smoke_02.log
+Select jobs to execute...

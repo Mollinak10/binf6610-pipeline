@@ -1,0 +1,30 @@
+Using profile profiles/laptop for setting default command line arguments.
+Config file config.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+
+SNAKEMAKE
+=========
+  Date: 2026-10-16 23:13:35
+  Workflow ID: 8b553062-7b64-44dd-abfd-0c570d731218
+  Platform: Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.31
+  Host: DESKTOP-MBJ0599
+  User: molly_k
+  Snakemake version: 9.27.0
+  Python version: 3.14.8 | packaged by conda-forge | (main, Oct 12 2026, 17:35:27) [GCC 15.3.0]
+  Command: /home/molly_k/miniforge3/envs/smk/bin/snakemake --profile profiles/laptop --config samplesheet=/home/molly_k/smoke/samplesheet.csv ref=/home/molly_k/smoke/smoke.fa region=smoke_1mb
+  Snakefile: /home/molly_k/binf6610-pipeline/Snakefile
+  Base directory: /home/molly_k/binf6610-pipeline
+  Run directory: /home/molly_k/binf6610-pipeline
+  Working directory: /home/molly_k/binf6610-pipeline
+  Config file(s): [PosixPath('/home/molly_k/binf6610-pipeline/profiles/laptop/platform.yaml'), 'config.yaml']
+  Config MD5: 13fc6c5781af14bf5329a8bd449f94e9
+
+Building DAG of jobs...
+IncompleteFilesException:
+The files below seem to be incomplete. If you are sure that certain files are not incomplete, mark them as complete with
+
+    snakemake --cleanup-metadata <filenames>
+
+To re-generate the files rerun your command with the --rerun-incomplete flag.
+Incomplete files:
+work/gvcf/smoke_02.g.vcf.gz

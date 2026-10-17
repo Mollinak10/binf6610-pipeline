@@ -1,0 +1,93 @@
+Using profile profiles/laptop for setting default command line arguments.
+Config file config.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+
+SNAKEMAKE
+=========
+  Date: 2026-10-16 23:14:14
+  Workflow ID: abb386ef-3ed1-4803-a158-8f55cb6174fe
+  Platform: Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.31
+  Host: DESKTOP-MBJ0599
+  User: molly_k
+  Snakemake version: 9.27.0
+  Python version: 3.14.8 | packaged by conda-forge | (main, Oct 12 2026, 17:35:27) [GCC 15.3.0]
+  Command: /home/molly_k/miniforge3/envs/smk/bin/snakemake --profile profiles/laptop --rerun-incomplete --config samplesheet=/home/molly_k/smoke/samplesheet.csv ref=/home/molly_k/smoke/smoke.fa region=smoke_1mb
+  Snakefile: /home/molly_k/binf6610-pipeline/Snakefile
+  Base directory: /home/molly_k/binf6610-pipeline
+  Run directory: /home/molly_k/binf6610-pipeline
+  Working directory: /home/molly_k/binf6610-pipeline
+  Config file(s): [PosixPath('/home/molly_k/binf6610-pipeline/profiles/laptop/platform.yaml'), 'config.yaml']
+  Config MD5: 13fc6c5781af14bf5329a8bd449f94e9
+
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Provided resources: mem_mb=Resource("mem_mb", 2500)
+Singularity containers: ignored
+Job stats:
+job                count
+---------------  -------
+fastp_paired           1
+fastp_single           1
+fastqc                 1
+haplotypecaller        3
+bwa_mem                2
+markduplicates         2
+multiqc                1
+joint_genotype         1
+filter                 1
+publish                1
+all                    1
+total                 15
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:14:14 2026]
+localrule haplotypecaller:
+    input: work/markdup/smoke_02.markdup.bam, work/markdup/smoke_02.markdup.bam.bai, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.dict
+    output: work/gvcf/smoke_02.g.vcf.gz, work/gvcf/smoke_02.g.vcf.gz.tbi
+    log: logs/haplotypecaller/smoke_02.log
+    jobid: 8
+    reason: Forced execution
+    wildcards: sample=smoke_02
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: gatk --java-options '-Xmx1600m' HaplotypeCaller -R /home/molly_k/smoke/smoke.fa -I work/markdup/smoke_02.markdup.bam -O work/gvcf/smoke_02.g.vcf.gz -L smoke_1mb -ERC GVCF --native-pair-hmm-threads 2 --tmp-dir work/gvcf 2> logs/haplotypecaller/smoke_02.log
+Select jobs to execute...
+[Fri Oct 16 23:14:40 2026]
+Finished jobid: 8 (Rule: haplotypecaller)
+1 of 15 steps (7%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:14:40 2026]
+localrule fastqc:
+    input: /home/molly_k/smoke/smoke_03_R1.fastq.gz, work/validate/samplesheet.csv
+    output: work/fastqc/smoke_03
+    log: logs/fastqc/smoke_03.log
+    jobid: 19
+    reason: Missing output files: work/fastqc/smoke_03
+    wildcards: sample=smoke_03
+    threads: 2
+    resources: tmpdir=/tmp
+Shell command: (mkdir -p work/fastqc/smoke_03 && fastqc -q -t 2 -o work/fastqc/smoke_03 /home/molly_k/smoke/smoke_03_R1.fastq.gz) 2> logs/fastqc/smoke_03.log
+Select jobs to execute...
+application/gzip
+[Fri Oct 16 23:14:43 2026]
+Finished jobid: 19 (Rule: fastqc)
+2 of 15 steps (13%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:14:43 2026]
+localrule fastp_paired:
+    input: /home/molly_k/smoke/smoke_01_R1.fastq.gz, /home/molly_k/smoke/smoke_01_R2.fastq.gz, work/validate/samplesheet.csv
+    output: work/trim/smoke_01_R1.trim.fastq.gz, work/trim/smoke_01_R2.trim.fastq.gz, work/trim/smoke_01.fastp.json, work/trim/smoke_01.fastp.html
+    log: logs/fastp/smoke_01.log
+    jobid: 6
+    reason: Missing output files: work/trim/smoke_01_R1.trim.fastq.gz, work/trim/smoke_01.fastp.json, work/trim/smoke_01_R2.trim.fastq.gz
+    wildcards: sample=smoke_01
+    threads: 2
+    resources: tmpdir=/tmp
+Shell command: fastp -w 2 -i /home/molly_k/smoke/smoke_01_R1.fastq.gz -I /home/molly_k/smoke/smoke_01_R2.fastq.gz --detect_adapter_for_pe -o work/trim/smoke_01_R1.trim.fastq.gz -O work/trim/smoke_01_R2.trim.fastq.gz -j work/trim/smoke_01.fastp.json -h work/trim/smoke_01.fastp.html 2> logs/fastp/smoke_01.log
+Select jobs to execute...

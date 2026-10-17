@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-# validate_samplesheet.sh <samplesheet.csv> <reference.fa> <reference.dict>
-# Stage 0, run by VALIDATE. Each FASTQ is opened by its file name, $(basename "$r1").
+# validate_samplesheet.sh <samplesheet.csv> <reference.fa> [reference.dict]
+# Stage 0. Each FASTQ is opened at the path the samplesheet gives: absolute, or
+# relative to the samplesheet's folder. (Snakemake links nothing into a task folder.)
 set -euo pipefail
-SHEET=${1:?usage}; REF=${2:?usage}; DICT=${3:?usage}
+SHEET=${1:?usage}; REF=${2:?usage}; DICT=${3:-${REF%.*}.dict}
+DIR=$(dirname "$SHEET")
+at() { [[ -z "$1" || "$1" == /* ]] && printf '%s' "$1" || printf '%s/%s' "$DIR" "$1"; }
 log() { printf '[validate] %s\n' "$*" >&2; }
 problems=0
 while IFS=, read -r id lt r1 r2; do
     [[ -n "$id" ]] || { log "a row has no sample_id"; problems=$(( problems + 1 )); continue; }
-    r1=$(basename "$r1"); [[ -z "$r2" ]] || r2=$(basename "$r2")
+    r1=$(at "$r1"); r2=$(at "$r2")
     case "$lt" in
         paired) [[ -n "$r2" ]] || { log "$id: library_type is paired but r2_fastq is empty"; problems=$(( problems + 1 )); } ;;
         single) [[ -z "$r2" ]] || { log "$id: library_type is single but r2_fastq is set"; problems=$(( problems + 1 )); } ;;

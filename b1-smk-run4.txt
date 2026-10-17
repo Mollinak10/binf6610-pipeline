@@ -1,0 +1,303 @@
+Using profile profiles/laptop for setting default command line arguments.
+Config file config.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+
+SNAKEMAKE
+=========
+  Date: 2026-10-16 23:15:40
+  Workflow ID: fda9a14b-7fad-496b-bdc1-ff690b1dabb6
+  Platform: Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.31
+  Host: DESKTOP-MBJ0599
+  User: molly_k
+  Snakemake version: 9.27.0
+  Python version: 3.14.8 | packaged by conda-forge | (main, Oct 12 2026, 17:35:27) [GCC 15.3.0]
+  Command: /home/molly_k/miniforge3/envs/smk/bin/snakemake --profile profiles/laptop --rerun-incomplete --config samplesheet=/home/molly_k/smoke/samplesheet.csv ref=/home/molly_k/smoke/smoke.fa region=smoke_1mb
+  Snakefile: /home/molly_k/binf6610-pipeline/Snakefile
+  Base directory: /home/molly_k/binf6610-pipeline
+  Run directory: /home/molly_k/binf6610-pipeline
+  Working directory: /home/molly_k/binf6610-pipeline
+  Config file(s): [PosixPath('/home/molly_k/binf6610-pipeline/profiles/laptop/platform.yaml'), 'config.yaml']
+  Config MD5: 13fc6c5781af14bf5329a8bd449f94e9
+
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Provided resources: mem_mb=Resource("mem_mb", 2500)
+Singularity containers: ignored
+Job stats:
+job                count
+---------------  -------
+fastp_paired           1
+fastp_single           1
+bwa_mem                2
+markduplicates         2
+haplotypecaller        2
+multiqc                1
+joint_genotype         1
+filter                 1
+publish                1
+all                    1
+total                 13
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:15:41 2026]
+localrule fastp_single:
+    input: /home/molly_k/smoke/smoke_03_R1.fastq.gz, work/validate/samplesheet.csv
+    output: work/trim/smoke_03_R1.trim.fastq.gz, work/trim/smoke_03.fastp.json, work/trim/smoke_03.fastp.html
+    log: logs/fastp/smoke_03.log
+    jobid: 15
+    reason: Missing output files: work/trim/smoke_03_R1.trim.fastq.gz, work/trim/smoke_03.fastp.json
+    wildcards: sample=smoke_03
+    threads: 2
+    resources: tmpdir=/tmp
+Shell command: fastp -w 2 -i /home/molly_k/smoke/smoke_03_R1.fastq.gz -o work/trim/smoke_03_R1.trim.fastq.gz -j work/trim/smoke_03.fastp.json -h work/trim/smoke_03.fastp.html 2> logs/fastp/smoke_03.log
+Select jobs to execute...
+[Fri Oct 16 23:15:49 2026]
+Finished jobid: 15 (Rule: fastp_single)
+1 of 13 steps (8%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:15:49 2026]
+localrule fastp_paired:
+    input: /home/molly_k/smoke/smoke_01_R1.fastq.gz, /home/molly_k/smoke/smoke_01_R2.fastq.gz, work/validate/samplesheet.csv
+    output: work/trim/smoke_01_R1.trim.fastq.gz, work/trim/smoke_01_R2.trim.fastq.gz, work/trim/smoke_01.fastp.json, work/trim/smoke_01.fastp.html
+    log: logs/fastp/smoke_01.log
+    jobid: 6
+    reason: Missing output files: work/trim/smoke_01_R1.trim.fastq.gz, work/trim/smoke_01_R2.trim.fastq.gz, work/trim/smoke_01.fastp.json
+    wildcards: sample=smoke_01
+    threads: 2
+    resources: tmpdir=/tmp
+Shell command: fastp -w 2 -i /home/molly_k/smoke/smoke_01_R1.fastq.gz -I /home/molly_k/smoke/smoke_01_R2.fastq.gz --detect_adapter_for_pe -o work/trim/smoke_01_R1.trim.fastq.gz -O work/trim/smoke_01_R2.trim.fastq.gz -j work/trim/smoke_01.fastp.json -h work/trim/smoke_01.fastp.html 2> logs/fastp/smoke_01.log
+Select jobs to execute...
+[Fri Oct 16 23:16:10 2026]
+Finished jobid: 6 (Rule: fastp_paired)
+2 of 13 steps (15%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:16:10 2026]
+localrule bwa_mem:
+    input: work/trim/smoke_01_R1.trim.fastq.gz, work/trim/smoke_01_R2.trim.fastq.gz, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.fa.amb, /home/molly_k/smoke/smoke.fa.ann, /home/molly_k/smoke/smoke.fa.bwt, /home/molly_k/smoke/smoke.fa.pac, /home/molly_k/smoke/smoke.fa.sa
+    output: work/align/smoke_01.sorted.bam
+    log: logs/bwa_mem/smoke_01.log
+    jobid: 5
+    reason: Missing output files: work/align/smoke_01.sorted.bam; Input files updated by another job: work/trim/smoke_01_R1.trim.fastq.gz, work/trim/smoke_01_R2.trim.fastq.gz
+    wildcards: sample=smoke_01
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: 
+        (bwa mem -t 2 -R '@RG\tID:smoke_01\tSM:smoke_01\tPL:ILLUMINA' /home/molly_k/smoke/smoke.fa work/trim/smoke_01_R1.trim.fastq.gz work/trim/smoke_01_R2.trim.fastq.gz \
+            | samtools sort -@ 2 -T work/align/smoke_01.tmp -o work/align/smoke_01.sorted.bam -) 2> logs/bwa_mem/smoke_01.log
+        
+Select jobs to execute...
+[Fri Oct 16 23:16:21 2026]
+Finished jobid: 5 (Rule: bwa_mem)
+3 of 13 steps (23%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:16:21 2026]
+localrule markduplicates:
+    input: work/align/smoke_01.sorted.bam
+    output: work/markdup/smoke_01.markdup.bam, work/markdup/smoke_01.markdup.bam.bai, work/markdup/smoke_01.markdup.metrics.txt
+    log: logs/markduplicates/smoke_01.log
+    jobid: 4
+    reason: Missing output files: work/markdup/smoke_01.markdup.bam.bai, work/markdup/smoke_01.markdup.bam, work/markdup/smoke_01.markdup.metrics.txt; Input files updated by another job: work/align/smoke_01.sorted.bam
+    wildcards: sample=smoke_01
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: (gatk --java-options '-Xmx1600m' MarkDuplicates -I work/align/smoke_01.sorted.bam -O work/markdup/smoke_01.markdup.bam -M work/markdup/smoke_01.markdup.metrics.txt --TMP_DIR work/markdup && samtools index work/markdup/smoke_01.markdup.bam) 2> logs/markduplicates/smoke_01.log
+Select jobs to execute...
+Tool returned:
+0
+[Fri Oct 16 23:16:26 2026]
+Finished jobid: 4 (Rule: markduplicates)
+4 of 13 steps (31%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:16:26 2026]
+localrule haplotypecaller:
+    input: work/markdup/smoke_01.markdup.bam, work/markdup/smoke_01.markdup.bam.bai, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.dict
+    output: work/gvcf/smoke_01.g.vcf.gz, work/gvcf/smoke_01.g.vcf.gz.tbi
+    log: logs/haplotypecaller/smoke_01.log
+    jobid: 3
+    reason: Missing output files: work/gvcf/smoke_01.g.vcf.gz, work/gvcf/smoke_01.g.vcf.gz.tbi; Input files updated by another job: work/markdup/smoke_01.markdup.bam.bai, work/markdup/smoke_01.markdup.bam
+    wildcards: sample=smoke_01
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: gatk --java-options '-Xmx1600m' HaplotypeCaller -R /home/molly_k/smoke/smoke.fa -I work/markdup/smoke_01.markdup.bam -O work/gvcf/smoke_01.g.vcf.gz -L smoke_1mb -ERC GVCF --native-pair-hmm-threads 2 --tmp-dir work/gvcf 2> logs/haplotypecaller/smoke_01.log
+Select jobs to execute...
+[Fri Oct 16 23:16:52 2026]
+Finished jobid: 3 (Rule: haplotypecaller)
+5 of 13 steps (38%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:16:52 2026]
+localrule bwa_mem:
+    input: work/trim/smoke_03_R1.trim.fastq.gz, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.fa.amb, /home/molly_k/smoke/smoke.fa.ann, /home/molly_k/smoke/smoke.fa.bwt, /home/molly_k/smoke/smoke.fa.pac, /home/molly_k/smoke/smoke.fa.sa
+    output: work/align/smoke_03.sorted.bam
+    log: logs/bwa_mem/smoke_03.log
+    jobid: 14
+    reason: Missing output files: work/align/smoke_03.sorted.bam; Input files updated by another job: work/trim/smoke_03_R1.trim.fastq.gz
+    wildcards: sample=smoke_03
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: 
+        (bwa mem -t 2 -R '@RG\tID:smoke_03\tSM:smoke_03\tPL:ILLUMINA' /home/molly_k/smoke/smoke.fa work/trim/smoke_03_R1.trim.fastq.gz \
+            | samtools sort -@ 2 -T work/align/smoke_03.tmp -o work/align/smoke_03.sorted.bam -) 2> logs/bwa_mem/smoke_03.log
+        
+[Fri Oct 16 23:16:55 2026]
+Finished jobid: 14 (Rule: bwa_mem)
+6 of 13 steps (46%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:16:55 2026]
+localrule markduplicates:
+    input: work/align/smoke_03.sorted.bam
+    output: work/markdup/smoke_03.markdup.bam, work/markdup/smoke_03.markdup.bam.bai, work/markdup/smoke_03.markdup.metrics.txt
+    log: logs/markduplicates/smoke_03.log
+    jobid: 13
+    reason: Missing output files: work/markdup/smoke_03.markdup.bam.bai, work/markdup/smoke_03.markdup.metrics.txt, work/markdup/smoke_03.markdup.bam; Input files updated by another job: work/align/smoke_03.sorted.bam
+    wildcards: sample=smoke_03
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: (gatk --java-options '-Xmx1600m' MarkDuplicates -I work/align/smoke_03.sorted.bam -O work/markdup/smoke_03.markdup.bam -M work/markdup/smoke_03.markdup.metrics.txt --TMP_DIR work/markdup && samtools index work/markdup/smoke_03.markdup.bam) 2> logs/markduplicates/smoke_03.log
+Tool returned:
+0
+[Fri Oct 16 23:16:59 2026]
+Finished jobid: 13 (Rule: markduplicates)
+7 of 13 steps (54%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:16:59 2026]
+localrule haplotypecaller:
+    input: work/markdup/smoke_03.markdup.bam, work/markdup/smoke_03.markdup.bam.bai, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.dict
+    output: work/gvcf/smoke_03.g.vcf.gz, work/gvcf/smoke_03.g.vcf.gz.tbi
+    log: logs/haplotypecaller/smoke_03.log
+    jobid: 12
+    reason: Missing output files: work/gvcf/smoke_03.g.vcf.gz, work/gvcf/smoke_03.g.vcf.gz.tbi; Input files updated by another job: work/markdup/smoke_03.markdup.bam.bai, work/markdup/smoke_03.markdup.bam
+    wildcards: sample=smoke_03
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: gatk --java-options '-Xmx1600m' HaplotypeCaller -R /home/molly_k/smoke/smoke.fa -I work/markdup/smoke_03.markdup.bam -O work/gvcf/smoke_03.g.vcf.gz -L smoke_1mb -ERC GVCF --native-pair-hmm-threads 2 --tmp-dir work/gvcf 2> logs/haplotypecaller/smoke_03.log
+Select jobs to execute...
+[Fri Oct 16 23:17:15 2026]
+Finished jobid: 12 (Rule: haplotypecaller)
+8 of 13 steps (62%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:17:15 2026]
+localrule joint_genotype:
+    input: work/gvcf/smoke_01.g.vcf.gz, work/gvcf/smoke_02.g.vcf.gz, work/gvcf/smoke_03.g.vcf.gz, work/gvcf/smoke_01.g.vcf.gz.tbi, work/gvcf/smoke_02.g.vcf.gz.tbi, work/gvcf/smoke_03.g.vcf.gz.tbi, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.dict
+    output: work/joint/cohort.vcf.gz, work/joint/cohort.vcf.gz.tbi
+    log: logs/joint_genotype.log
+    jobid: 2
+    reason: Missing output files: work/joint/cohort.vcf.gz.tbi, work/joint/cohort.vcf.gz; Input files updated by another job: work/gvcf/smoke_03.g.vcf.gz.tbi, work/gvcf/smoke_03.g.vcf.gz, work/gvcf/smoke_01.g.vcf.gz, work/gvcf/smoke_01.g.vcf.gz.tbi
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: (gatk --java-options '-Xmx1600m' CombineGVCFs -R /home/molly_k/smoke/smoke.fa -V work/gvcf/smoke_01.g.vcf.gz -V work/gvcf/smoke_02.g.vcf.gz -V work/gvcf/smoke_03.g.vcf.gz -L smoke_1mb -O work/joint/cohort.g.vcf.gz --tmp-dir work/joint && gatk --java-options '-Xmx1600m' GenotypeGVCFs -R /home/molly_k/smoke/smoke.fa -V work/joint/cohort.g.vcf.gz -L smoke_1mb -O work/joint/cohort.vcf.gz --tmp-dir work/joint) 2> logs/joint_genotype.log
+Select jobs to execute...
+[Fri Oct 16 23:17:35 2026]
+Finished jobid: 2 (Rule: joint_genotype)
+9 of 13 steps (69%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:17:35 2026]
+localrule filter:
+    input: work/joint/cohort.vcf.gz, work/joint/cohort.vcf.gz.tbi, /home/molly_k/smoke/smoke.fa, /home/molly_k/smoke/smoke.fa.fai, /home/molly_k/smoke/smoke.dict
+    output: results/cohort.filtered.vcf.gz, results/cohort.filtered.vcf.gz.tbi, results/variants.tsv
+    log: logs/filter.log
+    jobid: 1
+    reason: Missing output files: results/cohort.filtered.vcf.gz.tbi, results/variants.tsv, results/cohort.filtered.vcf.gz; Input files updated by another job: work/joint/cohort.vcf.gz.tbi, work/joint/cohort.vcf.gz
+    threads: 2
+    resources: tmpdir=/tmp, mem_mb=2000, mem=2 GB, mem_mib=1908
+Shell command: 
+        (mkdir -p work/filter
+        gatk --java-options '-Xmx1600m' SelectVariants -R /home/molly_k/smoke/smoke.fa -V work/joint/cohort.vcf.gz \
+            --select-type-to-include SNP -O work/filter/snps.vcf.gz
+        gatk --java-options '-Xmx1600m' VariantFiltration -R /home/molly_k/smoke/smoke.fa -V work/filter/snps.vcf.gz \
+            -O work/filter/snps.filtered.vcf.gz \
+            --filter-expression "QD < 2.0"              --filter-name "QD2" \
+            --filter-expression "QUAL < 30.0"           --filter-name "QUAL30" \
+            --filter-expression "SOR > 3.0"             --filter-name "SOR3" \
+            --filter-expression "FS > 60.0"             --filter-name "FS60" \
+            --filter-expression "MQ < 40.0"             --filter-name "MQ40" \
+            --filter-expression "MQRankSum < -12.5"     --filter-name "MQRankSum-12.5" \
+            --filter-expression "ReadPosRankSum < -8.0" --filter-name "ReadPosRankSum-8"
+        gatk --java-options '-Xmx1600m' SelectVariants -R /home/molly_k/smoke/smoke.fa -V work/joint/cohort.vcf.gz \
+            --select-type-to-include INDEL --select-type-to-include MIXED -O work/filter/indels.vcf.gz
+        gatk --java-options '-Xmx1600m' VariantFiltration -R /home/molly_k/smoke/smoke.fa -V work/filter/indels.vcf.gz \
+            -O work/filter/indels.filtered.vcf.gz \
+            --filter-expression "QD < 2.0"               --filter-name "QD2" \
+            --filter-expression "QUAL < 30.0"            --filter-name "QUAL30" \
+            --filter-expression "FS > 200.0"             --filter-name "FS200" \
+            --filter-expression "ReadPosRankSum < -20.0" --filter-name "ReadPosRankSum-20"
+        gatk --java-options '-Xmx1600m' MergeVcfs -I work/filter/snps.filtered.vcf.gz \
+            -I work/filter/indels.filtered.vcf.gz -O results/cohort.filtered.vcf.gz
+        printf 'chrom\tpos\tref\talt\tqual\tfilter\n' > results/variants.tsv
+        bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%QUAL\t%FILTER\n' results/cohort.filtered.vcf.gz >> results/variants.tsv
+        ) 2> logs/filter.log
+        
+Select jobs to execute...
+Tool returned:
+0
+[Fri Oct 16 23:17:49 2026]
+Finished jobid: 1 (Rule: filter)
+10 of 13 steps (77%) done
+Execute 1 jobs...
+
+[Fri Oct 16 23:17:49 2026]
+localrule multiqc:
+    input: work/fastqc/smoke_01, work/fastqc/smoke_02, work/fastqc/smoke_03, work/trim/smoke_01.fastp.json, work/trim/smoke_02.fastp.json, work/trim/smoke_03.fastp.json, work/markdup/smoke_01.markdup.metrics.txt, work/markdup/smoke_02.markdup.metrics.txt, work/markdup/smoke_03.markdup.metrics.txt
+    output: results/multiqc_report.html
+    log: logs/multiqc.log
+    jobid: 16
+    reason: Missing output files: results/multiqc_report.html; Input files updated by another job: work/markdup/smoke_03.markdup.metrics.txt, work/trim/smoke_01.fastp.json, work/markdup/smoke_01.markdup.metrics.txt, work/trim/smoke_03.fastp.json
+    resources: tmpdir=/tmp
+Shell command: (multiqc -q -f -o work/multiqc work/fastqc/smoke_01 work/fastqc/smoke_02 work/fastqc/smoke_03 work/trim/smoke_01.fastp.json work/trim/smoke_02.fastp.json work/trim/smoke_03.fastp.json work/markdup/smoke_01.markdup.metrics.txt work/markdup/smoke_02.markdup.metrics.txt work/markdup/smoke_03.markdup.metrics.txt && cp work/multiqc/multiqc_report.html results/multiqc_report.html) 2> logs/multiqc.log
+[Fri Oct 16 23:17:54 2026]
+Finished jobid: 16 (Rule: multiqc)
+11 of 13 steps (85%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:17:54 2026]
+localrule publish:
+    input: work/validate/samplesheet.csv, results/cohort.filtered.vcf.gz, results/cohort.filtered.vcf.gz.tbi, results/variants.tsv, results/multiqc_report.html
+    output: results/manifest.json, results/samples.tsv
+    log: logs/publish.log
+    jobid: 20
+    reason: Missing output files: results/samples.tsv, results/manifest.json; Input files updated by another job: results/multiqc_report.html, results/cohort.filtered.vcf.gz.tbi, results/variants.tsv, results/cohort.filtered.vcf.gz
+    resources: tmpdir=/tmp
+Shell command: 
+        printf 'sample_id\tcondition\n' > results/samples.tsv
+        awk -F, 'NR == 1 { for (i = 1; i <= NF; i++) col[$i] = i; next }
+                 { print $col["sample_id"] "\t" $col["condition"] }' work/validate/samplesheet.csv >> results/samples.tsv
+
+        # The manifest checksums copies of exactly what this run published.
+        rm -rf work/publish && mkdir -p work/publish/published
+        cp results/cohort.filtered.vcf.gz results/cohort.filtered.vcf.gz.tbi results/variants.tsv results/multiqc_report.html results/samples.tsv work/publish/published/
+
+        NAME=variant-call VERSION=1.0.0 REVISION=none COMMIT=none RUN_NAME=snakemake-20261016T231541 STARTED_AT=2026-10-16T23:15:41.051405-04:00 LAUNCH_DIR=/home/molly_k/binf6610-pipeline ENGINE='snakemake 9.27.0' PLATFORM=laptop EXECUTOR=local PARAMS='platform=laptop executor=local samplesheet=/home/molly_k/smoke/samplesheet.csv ref=/home/molly_k/smoke/smoke.fa region=smoke_1mb outdir=results' CONTAINERS='' /home/molly_k/binf6610-pipeline/bin/run_manifest.sh work/publish/published work/validate/samplesheet.csv > results/manifest.json 2> logs/publish.log
+        
+[Fri Oct 16 23:17:54 2026]
+Finished jobid: 20 (Rule: publish)
+12 of 13 steps (92%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Oct 16 23:17:54 2026]
+localrule all:
+    input: results/cohort.filtered.vcf.gz, results/variants.tsv, results/multiqc_report.html, results/samples.tsv, results/manifest.json
+    jobid: 0
+    reason: Input files updated by another job: results/variants.tsv, results/cohort.filtered.vcf.gz, results/samples.tsv, results/multiqc_report.html, results/manifest.json
+    resources: tmpdir=/tmp
+Shell command: None
+[Fri Oct 16 23:17:54 2026]
+Finished jobid: 0 (Rule: all)
+13 of 13 steps (100%) done
+Complete log(s): /home/molly_k/binf6610-pipeline/.snakemake/log/2026-10-16T231540.965587.snakemake.log
+Elapsed time: 0:02:13.718300

@@ -1,0 +1,5 @@
+cores: 2
+configfile: profiles/laptop/platform.yaml
+printshellcmds: true
+resources:
+  mem_mb: 2500
