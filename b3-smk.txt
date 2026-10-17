@@ -1,0 +1,34 @@
+Using profile profiles/laptop for setting default command line arguments.
+Config file config.yaml is extended by additional config specified via the command line.
+Assuming unrestricted shared filesystem usage.
+
+SNAKEMAKE
+=========
+  Date: 2026-10-16 23:19:58
+  Workflow ID: ba678626-1751-492b-a224-6787772e9c7a
+  Platform: Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.31
+  Host: DESKTOP-MBJ0599
+  User: molly_k
+  Snakemake version: 9.27.0
+  Python version: 3.14.8 | packaged by conda-forge | (main, Oct 12 2026, 17:35:27) [GCC 15.3.0]
+  Command: /home/molly_k/miniforge3/envs/smk/bin/snakemake --profile profiles/laptop -n --config samplesheet=/home/molly_k/smoke/samplesheet.csv ref=/home/molly_k/smoke/smoke.fa region=smoke_1mb
+  Snakefile: /home/molly_k/binf6610-pipeline/Snakefile
+  Base directory: /home/molly_k/binf6610-pipeline
+  Run directory: /home/molly_k/binf6610-pipeline
+  Working directory: /home/molly_k/binf6610-pipeline
+  Config file(s): [PosixPath('/home/molly_k/binf6610-pipeline/profiles/laptop/platform.yaml'), 'config.yaml']
+  Config MD5: 13fc6c5781af14bf5329a8bd449f94e9
+
+Building DAG of jobs...
+AmbiguousRuleException:
+Rules fastp_paired and fastp_single are ambiguous for the file work/trim/smoke_01_R1.trim.fastq.gz.
+Consider starting rule output with a unique prefix, constrain your wildcards, or use the ruleorder directive.
+Wildcards:
+	fastp_paired: sample=smoke_01
+	fastp_single: sample=smoke_01
+Expected input files:
+	fastp_paired: /home/molly_k/smoke/smoke_01_R1.fastq.gz /home/molly_k/smoke/smoke_01_R2.fastq.gz work/validate/samplesheet.csv
+	fastp_single: /home/molly_k/smoke/smoke_01_R1.fastq.gz /home/molly_k/smoke/smoke_01_R2.fastq.gz work/validate/samplesheet.csv
+Expected output files:
+	fastp_paired: work/trim/smoke_01_R1.trim.fastq.gz work/trim/smoke_01_R2.trim.fastq.gz work/trim/smoke_01.fastp.json work/trim/smoke_01.fastp.html
+	fastp_single: work/trim/smoke_01_R1.trim.fastq.gz work/trim/smoke_01.fastp.json work/trim/smoke_01.fastp.html

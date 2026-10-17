@@ -1,0 +1,4 @@
+Using profile profiles/laptop for setting default command line arguments.
+Config file config.yaml is extended by additional config specified via the command line.
+RuleException in file "/home/molly_k/binf6610-pipeline/Snakefile", line 142:
+Not all output, log and benchmark files of rule bwa_mem contain the same wildcards. This is crucial though, in order to avoid that two or more jobs write to the same file.
