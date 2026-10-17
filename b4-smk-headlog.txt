@@ -1,0 +1,33 @@
+Finished jobid: 7 (Rule: validate)
+Error in rule fastp_paired:
+        (command exited with non-zero exit code)
+Error in rule fastp_paired:
+        (command exited with non-zero exit code)
+Error in rule fastp_paired:
+        (command exited with non-zero exit code)
+Error in rule fastp_paired:
+        (command exited with non-zero exit code)
+Error in rule fastp_paired:
+        (command exited with non-zero exit code)
+Error in rule fastp_paired:
+        (command exited with non-zero exit code)
+Error in rule fastqc:
+        (command exited with non-zero exit code)
+Error in rule fastqc:
+        (command exited with non-zero exit code)
+Error in rule fastqc:
+        (command exited with non-zero exit code)
+Error in rule fastqc:
+        (command exited with non-zero exit code)
+Error in rule fastqc:
+        (command exited with non-zero exit code)
+Error in rule fastqc:
+        (command exited with non-zero exit code)
+Error in rule fastqc:
+        (command exited with non-zero exit code)
+Error in rule fastqc:
+        (command exited with non-zero exit code)
+Error in rule fastp_single:
+        (command exited with non-zero exit code)
+Error in rule fastp_single:
+        (command exited with non-zero exit code)

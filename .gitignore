@@ -20,3 +20,4 @@ nf-head-*.out
 .snakemake/
 logs/
 slurm/*.out
+.java/

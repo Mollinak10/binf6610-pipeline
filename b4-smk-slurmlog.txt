@@ -1,0 +1,15 @@
+Error in rule fastp_paired:
+    message: None
+    jobid: 0
+    input: /courses/BINF6610.202710/data/fastq-variant/NA12878_R1.fastq.gz, /courses/BINF6610.202710/data/fastq-variant/NA12878_R2.fastq.gz, work/validate/samplesheet.csv
+    output: work/trim/NA12878_R1.trim.fastq.gz, work/trim/NA12878_R2.trim.fastq.gz, work/trim/NA12878.fastp.json, work/trim/NA12878.fastp.html
+    log: logs/fastp/NA12878.log (check log file(s) for error details)
+    shell:
+        fastp -w 4 -i /courses/BINF6610.202710/data/fastq-variant/NA12878_R1.fastq.gz -I /courses/BINF6610.202710/data/fastq-variant/NA12878_R2.fastq.gz --detect_adapter_for_pe -o work/trim/NA12878_R1.trim.fastq.gz -O work/trim/NA12878_R2.trim.fastq.gz -j work/trim/NA12878.fastp.json -h work/trim/NA12878.fastp.html 2> logs/fastp/NA12878.log
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error messages
+Storing output in storage.
+Elapsed time: 0:00:08.396806
+WorkflowError:
+At least one job did not complete successfully.
