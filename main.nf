@@ -14,7 +14,7 @@ workflow {
     main:
     ref       = file(params.ref)                                // the FASTA
     ref_index = files("${params.ref}.*")                        // its .fai and the BWA index
-    ref_dict  = file("${ref.parent}/${ref.baseName}.dict")      // GATK's sequence dictionary
+    ref_dict  = ref.resolveSibling("${ref.baseName}.dict")      // GATK's sequence dictionary
     sheet     = file(params.samplesheet)
 
     // One item per sample: [meta, reads], with meta = [id: ..., single_end: ...].

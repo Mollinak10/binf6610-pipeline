@@ -1,0 +1,39 @@
+[33mNextflow 26.10.3 is available - Please consider updating your version to it(B[m
+N E X T F L O W  ~  version 26.04.7
+Downloading plugin nf-amazon@3.9.3
+Downloading plugin nf-wave@1.21.0
+Launching `main.nf` [mad_waddington] - revision: 30d2669a31
+[75/e74e0e] Submitted process > VALIDATE
+[bc/314f23] Submitted process > FASTP (smoke_01)
+[03/8de4cc] Submitted process > FASTP (smoke_02)
+[5d/3f37d2] Submitted process > FASTP (smoke_03)
+[8f/ed3fe8] Submitted process > FASTQC (smoke_01)
+[dd/8cb047] Submitted process > FASTQC (smoke_02)
+[68/6cd14b] Submitted process > FASTQC (smoke_03)
+[db/bb82d6] Submitted process > BWA_MEM (smoke_03)
+[dc/9c40a5] Submitted process > BWA_MEM (smoke_02)
+[88/729a07] Submitted process > MARKDUPLICATES (smoke_03)
+[a3/769605] Submitted process > BWA_MEM (smoke_01)
+[f2/b3d5c3] Submitted process > MARKDUPLICATES (smoke_02)
+[46/ae6b77] Submitted process > MARKDUPLICATES (smoke_01)
+[1f/e386d3] Submitted process > HAPLOTYPECALLER (smoke_03)
+[03/aff165] Submitted process > HAPLOTYPECALLER (smoke_02)
+[5c/888e42] Submitted process > HAPLOTYPECALLER (smoke_01)
+[f1/32691d] Submitted process > MULTIQC
+[dd/f389e6] Submitted process > JOINT_GENOTYPE
+[68/20a9bc] Submitted process > FILTER
+[42/11a312] Submitted process > PUBLISH
+
+Outputs:
+
+  s3://binf6610-kaulmo/nf-results
+
+  vcf: cohort.filtered.vcf.gz
+
+  variants: variants.tsv
+
+  multiqc: multiqc_report.html
+
+  manifest: manifest.json
+
+  samples: samples.tsv
