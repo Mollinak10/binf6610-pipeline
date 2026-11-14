@@ -21,3 +21,4 @@ nf-head-*.out
 logs/
 slurm/*.out
 .java/
+*.db
